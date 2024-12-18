@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Naver News Reader</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>네이버 뉴스 읽기</title>
+    <!-- 인라인 스타일을 사용하므로 styles.css 링크를 제거했습니다 -->
   </head>
-  <body>
-    <div id="popup">
-      <h1>네이버 뉴스 기사</h1>
-      <div id="news-content">
-        <p>뉴스 기사를 읽으려면 네이버 뉴스 페이지로 이동하세요.</p>
+  <body style="font-family: sans-serif; margin: 0; padding: 0; width: 600px; height: 500px">
+    <div id="popup" style="padding: 10px; overflow-y: auto">
+      <h1 style="font-size: 10px; margin-bottom: 18px; text-align: center">네이버 뉴스 본문</h1>
+      <div id="news-content" style="font-size: 14px; line-height: 1.5; overflow-y: auto; max-height: 550px">
+        <p>뉴스 본문을 가져오는 중...</p>
       </div>
     </div>
     <script src="popup.js"></script>
