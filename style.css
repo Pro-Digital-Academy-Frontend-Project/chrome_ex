@@ -1,24 +1,25 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: sans-serif;
   margin: 0;
   padding: 0;
-  width: 300px;
-  height: 200px;
+  width: 800px; /* 팝업 넓이 */
+  height: 600px; /* 팝업 높이 */
 }
 
 #popup {
   padding: 10px;
+  overflow-y: auto; /* 스크롤 가능 */
 }
 
 h1 {
-  font-size: 18px;
+  font-size: 10px;
   margin-bottom: 10px;
   text-align: center;
 }
 
 #news-content {
-  font-size: 14px;
+  font-size: 10px;
   line-height: 1.5;
-  overflow-y: auto;
-  max-height: 150px;
+  overflow-y: auto; /* 스크롤 가능 */
+  max-height: 550px; /* 스크롤 영역 높이 */
 }
