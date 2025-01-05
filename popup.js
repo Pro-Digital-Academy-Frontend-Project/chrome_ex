@@ -44,8 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
   //주식 정보 불러오기
   function bringStockInfo(keywordId) {
     const url = `http://localhost:3000/api/keywords/${keywordId}/stock-rankings`;
-    console.log(`API 호출 URL: ${url}`);
-
     fetch(url)
       .then((response) => {
         if (!response.ok) {
@@ -66,22 +64,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateStockItems(stockRankings) {
+    inNewsPage.style.display = 'block';
     stockList.innerHTML = ''; // 기존 항목 초기화
-    stockRankings.forEach((stock, index) => {
+
+    // 배열을 5개까지만 제한
+    stockRankings.slice(0, 5).forEach((stock, index) => {
       const stockItem = document.createElement('div');
       stockItem.classList.add('stock-item');
       stockItem.dataset.symbol = stock.code;
       stockItem.innerHTML = `
         <span style="color: #0046ff; margin-right: 10px">${index + 1}</span>
-        ${stock.stock_name} (가중치: ${stock.weight.toFixed(2)})
+        ${stock.stock_name}
       `;
       stockList.appendChild(stockItem);
-
-      // 주가 가져오기 후 추가 정보 업데이트
-      fetchCurrentStockPrice(stock.code, (price) => {
-        stockItem.innerHTML += `<span style="margin-left: 10px; color: #555;">현재가: ${price}원</span>`;
-      });
     });
   }
-  bringStockInfo('92');
+  // bringStockInfo('92');
 });
