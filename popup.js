@@ -19,10 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       port.postMessage({ type: 'popup_opened' });
+
       notInNewsPage.style.display = 'none';
+      inNewsPage.style.display = 'block';
     } else {
       // 뉴스 기사 페이지가 아닌 경우
       notInNewsPage.style.display = 'block';
+      inNewsPage.style.display = 'none';
     }
   });
 
@@ -39,10 +42,46 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   //주식 정보 불러오기
-  function bringStockInfo(keword_id) {
-    //1. keyword_id로 해당 키워드에 대해 높은 가중치를 갖는 종목 3개를 받음
-    //2. 각 종목에 대한 주식 정보(시가, 종가, 고가, 저가, 거래량)를 받아옴
-    //3. UI에 적용함
-    inNewsPage.style.display = 'block';
+  function bringStockInfo(keywordId) {
+    const url = `http://localhost:3000/api/keywords/${keywordId}/stock-rankings`;
+    console.log(`API 호출 URL: ${url}`);
+
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP 상태 코드 오류: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('API 응답 데이터:', data);
+        const stockRankings = data.stock_rankings;
+        if (stockRankings && stockRankings.length > 0) {
+          updateStockItems(stockRankings);
+        } else {
+          console.error('주식 정보를 가져오지 못했습니다.');
+        }
+      })
+      .catch((error) => console.error('주식 정보 API 호출 중 오류 발생:', error));
   }
+
+  function updateStockItems(stockRankings) {
+    stockList.innerHTML = ''; // 기존 항목 초기화
+    stockRankings.forEach((stock, index) => {
+      const stockItem = document.createElement('div');
+      stockItem.classList.add('stock-item');
+      stockItem.dataset.symbol = stock.code;
+      stockItem.innerHTML = `
+        <span style="color: #0046ff; margin-right: 10px">${index + 1}</span>
+        ${stock.stock_name} (가중치: ${stock.weight.toFixed(2)})
+      `;
+      stockList.appendChild(stockItem);
+
+      // 주가 가져오기 후 추가 정보 업데이트
+      fetchCurrentStockPrice(stock.code, (price) => {
+        stockItem.innerHTML += `<span style="margin-left: 10px; color: #555;">현재가: ${price}원</span>`;
+      });
+    });
+  }
+  bringStockInfo('92');
 });

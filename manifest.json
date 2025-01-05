@@ -3,7 +3,7 @@
   "name": "Naver News Reader",
   "version": "1.2",
   "description": "네이버 뉴스 기사를 읽어서 팝업 창에 출력합니다.",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "http://localhost:3000/*"],
   "host_permissions": ["https://n.news.naver.com/article/*"],
   "background": {
     "service_worker": "background.js"
