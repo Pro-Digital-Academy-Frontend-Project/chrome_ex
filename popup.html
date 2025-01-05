@@ -9,18 +9,26 @@
   <body>
     <h1><span>[</span>Stockey<span>]</span> 키워드 기반 주식 인사이트</h1>
     <input placeholder="종목 정보를 얻고 싶은 키워드를 입력하세요" />
-    <h3>현재 뉴스의 키워드인 <span>[</span>키워드<span>]</span>를<br />가장 많이 언급한 주식 종목들</h3>
-    <div id="stock-list">
-      <div class="stock-item" data-symbol="종목1">
-        <span style="color: #0046ff; margin-right: 10px">1</span>주식종목명
-      </div>
-      <div class="stock-item" data-symbol="종목2">
-        <span style="color: #0046ff; margin-right: 10px">2</span>주식종목명
-      </div>
-      <div class="stock-item" data-symbol="종목3">
-        <span style="color: #0046ff; margin-right: 10px">3</span>주식종목명
+
+    <h3 id="not-in-news-page" style="display: none">
+      네이버 뉴스 페이지에서 실행하면,<br />해당 기사의 핵심 키워드에 대한<br />
+      주식 정보를 볼 수 있어요...
+    </h3>
+    <div id="in-news-page" style="display: none">
+      <h3>현재 뉴스의 키워드인 <span>[</span>키워드<span>]</span>를<br />가장 많이 언급한 주식 종목들</h3>
+      <div id="stock-list">
+        <div class="stock-item" data-symbol="종목1">
+          <span style="color: #0046ff; margin-right: 10px">1</span>주식종목명
+        </div>
+        <div class="stock-item" data-symbol="종목2">
+          <span style="color: #0046ff; margin-right: 10px">2</span>주식종목명
+        </div>
+        <div class="stock-item" data-symbol="종목3">
+          <span style="color: #0046ff; margin-right: 10px">3</span>주식종목명
+        </div>
       </div>
     </div>
+
     <a href="https://www.naver.com" target="_blank" rel="noopener noreferrer">
       더 다양한 키워드 기반 주식 정보를 얻고 싶다면?
     </a>
