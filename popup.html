@@ -3,16 +3,113 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>네이버 뉴스 읽기</title>
-    <!-- 인라인 스타일을 사용하므로 styles.css 링크를 제거했습니다 -->
+    <title>Stockey: 키워드 기반 주식 인사이트</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 20px;
+        width: 400px;
+        height: 500px;
+        box-sizing: border-box;
+        background-color: #ffffff;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-items: center;
+        gap: 20px;
+      }
+
+      h1 {
+        font-size: 22px;
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+      }
+
+      h1 span {
+        color: #0046ff;
+      }
+
+      input {
+        padding: 12px 15px;
+        width: 100%;
+        max-width: 300px;
+        background: #ededf0;
+        border: 1px solid #ededf0;
+        border-radius: 25px;
+        font-size: 14px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      input::placeholder {
+        color: #999;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #0046ff;
+        box-shadow: 0 4px 8px rgba(0, 70, 255, 0.2);
+      }
+
+      h3 {
+        font-size: 16px;
+        color: #555;
+        text-align: center;
+      }
+
+      h3 span {
+        color: #0046ff;
+      }
+
+      #stock-list {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .stock-item {
+        padding: 15px;
+        width: 300px;
+        border: 1px solid #ededf0;
+        border-radius: 10px;
+        background-color: #ededf0;
+        cursor: pointer;
+        text-align: left;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .stock-item:hover {
+        background-color: #88aafd;
+        box-shadow: 0 4px 8px rgba(0, 70, 255, 0.15);
+      }
+    </style>
   </head>
-  <body style="font-family: sans-serif; margin: 0; padding: 0; width: 600px; height: 500px">
-    <div id="popup" style="padding: 10px; overflow-y: auto">
-      <h1 style="font-size: 10px; margin-bottom: 18px; text-align: center">네이버 뉴스 본문</h1>
-      <div id="news-content" style="font-size: 14px; line-height: 1.5; overflow-y: auto; max-height: 550px">
-        <p>뉴스 본문을 가져오는 중...</p>
+  <body>
+    <h1><span>[</span>Stockey<span>]</span> 키워드 기반 주식 인사이트</h1>
+    <input placeholder="종목 정보를 얻고 싶은 키워드를 입력하세요" />
+    <h3>현재 뉴스의 키워드인 <span>[키워드]</span>를<br />가장 많이 언급한 주식 종목들</h3>
+    <div id="stock-list">
+      <div class="stock-item" data-symbol="종목1">
+        <span style="color: #0046ff; margin-right: 10px">1</span>주식종목명
+      </div>
+      <div class="stock-item" data-symbol="종목2">
+        <span style="color: #0046ff; margin-right: 10px">2</span>주식종목명
+      </div>
+      <div class="stock-item" data-symbol="종목3">
+        <span style="color: #0046ff; margin-right: 10px">3</span>주식종목명
       </div>
     </div>
-    <script src="popup.js"></script>
+    <a href="https://www.naver.com" target="_blank" rel="noopener noreferrer">
+      더 다양한 키워드 기반 주식 정보를 얻고 싶다면?
+    </a>
   </body>
 </html>

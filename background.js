@@ -6,13 +6,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('백그라운드에서 받은 메시지:', message);
   if (message.type === 'article_text') {
     lastMessage = message; // 메시지를 저장
-    chrome.runtime.sendMessage(message, (response) => {
-      if (chrome.runtime.lastError) {
-        console.error('팝업에 메시지를 보낼 수 없습니다. 팝업이 닫혀 있거나 활성화되지 않았습니다.');
-      } else {
-        console.log('팝업으로 메시지 전송 성공:', response);
-      }
-    });
   } else {
     console.warn('알 수 없는 메시지 타입:', message.type);
   }

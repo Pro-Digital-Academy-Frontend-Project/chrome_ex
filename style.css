@@ -23,3 +23,32 @@ h1 {
   overflow-y: auto; /* 스크롤 가능 */
   max-height: 550px; /* 스크롤 영역 높이 */
 }
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 10px;
+  width: 400px;
+  height: 600px;
+}
+h1 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.stock-item {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.stock-item:hover {
+  background-color: #f0f0f0;
+}
+#stock-details {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
