@@ -3,16 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>네이버 뉴스 읽기</title>
-    <!-- 인라인 스타일을 사용하므로 styles.css 링크를 제거했습니다 -->
+    <title>Stockey: 키워드 기반 주식 인사이트</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body style="font-family: sans-serif; margin: 0; padding: 0; width: 600px; height: 500px">
-    <div id="popup" style="padding: 10px; overflow-y: auto">
-      <h1 style="font-size: 10px; margin-bottom: 18px; text-align: center">네이버 뉴스 본문</h1>
-      <div id="news-content" style="font-size: 14px; line-height: 1.5; overflow-y: auto; max-height: 550px">
-        <p>뉴스 본문을 가져오는 중...</p>
+  <body>
+    <h1><span>[</span>Stockey<span>]</span> 키워드 기반 주식 인사이트</h1>
+    <input placeholder="종목 정보를 얻고 싶은 키워드를 입력하세요" />
+    <h3>현재 뉴스의 키워드인 <span>[</span>키워드<span>]</span>를<br />가장 많이 언급한 주식 종목들</h3>
+    <div id="stock-list">
+      <div class="stock-item" data-symbol="종목1">
+        <span style="color: #0046ff; margin-right: 10px">1</span>주식종목명
+      </div>
+      <div class="stock-item" data-symbol="종목2">
+        <span style="color: #0046ff; margin-right: 10px">2</span>주식종목명
+      </div>
+      <div class="stock-item" data-symbol="종목3">
+        <span style="color: #0046ff; margin-right: 10px">3</span>주식종목명
       </div>
     </div>
-    <script src="popup.js"></script>
+    <a href="https://www.naver.com" target="_blank" rel="noopener noreferrer">
+      더 다양한 키워드 기반 주식 정보를 얻고 싶다면?
+    </a>
   </body>
 </html>
