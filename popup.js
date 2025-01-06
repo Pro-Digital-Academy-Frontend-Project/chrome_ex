@@ -1,10 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-  let articleTxt = null;
+  const keywordInput = document.getElementById('keyword-input');
+  const searchResults = document.getElementById('search-results');
+  const inNewsPageTitle = document.getElementById('in-news-page-title');
+  const searchPageTitle = document.getElementById('search-page-title');
+  const keywordNameElements = document.querySelectorAll('.keyword-name'); // 모든 keyword-name 선택
   const inNewsPage = document.getElementById('in-news-page');
   const notInNewsPage = document.getElementById('not-in-news-page');
   const stockList = document.getElementById('stock-list');
-  const keywordInput = document.getElementById('keyword-input');
-  const searchResults = document.getElementById('search-results');
+
+  // 검색 결과 초기 숨김
+  searchResults.style.display = 'none';
+  searchPageTitle.style.display = 'none';
 
   // 현재 탭의 URL 확인
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -23,12 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       notInNewsPage.style.display = 'none';
       inNewsPage.style.display = 'block';
+      inNewsPageTitle.style.display = 'block';
     } else {
       // 뉴스 기사 페이지가 아닌 경우
       notInNewsPage.style.display = 'block';
       inNewsPage.style.display = 'none';
+      inNewsPageTitle.style.display = 'none';
     }
   });
+
   // 검색어 입력 후 엔터키 이벤트
   keywordInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
@@ -38,10 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-  //키워드 검색
+
+  // 키워드 검색
   function searchKeyword(keyword) {
-    //해당 키워드에 대한 유사 키워드 10개 반환
-    //사용자가 검색 결과 중 하나를 선택 시 해당 키워드 id에 대해 bringStockInfo 호출
     const url = `http://localhost:3000/api/keywords/${keyword}`;
     fetch(url)
       .then((response) => {
@@ -56,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch((error) => console.error('키워드 검색 API 호출 중 오류 발생:', error));
   }
-
   // 검색 결과 업데이트
   function updateSearchResults(keywords) {
     searchResults.innerHTML = ''; // 기존 결과 초기화
@@ -71,14 +78,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 항목 클릭 이벤트
         keywordItem.addEventListener('click', () => {
+          updateKeywordName(keywordObj.keyword);
+          searchResults.style.display = 'none';
+          searchPageTitle.style.display = 'block';
           bringStockInfo(keywordObj.id);
-          searchResults.style.display = 'none'; // 검색 결과 창 닫기
         });
 
         searchResults.appendChild(keywordItem);
       });
     } else {
       searchResults.style.display = 'none'; // 검색 결과 없음
+    }
+  }
+
+  // 키워드 갱신 및 제목 전환
+  function updateKeywordName(keyword) {
+    if (keyword && keywordNameElements.length > 0) {
+      keywordNameElements.forEach((element) => {
+        element.textContent = keyword; // 모든 keyword-name 갱신
+      });
+      inNewsPageTitle.style.display = 'none'; // 뉴스 제목 숨김
+      searchPageTitle.style.display = 'block'; // 검색 제목 표시
+    } else {
+      console.error('키워드 갱신 오류: 키워드가 비어 있거나 keyword-name 요소가 없습니다.');
     }
   }
 
