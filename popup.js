@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const inNewsPage = document.getElementById('in-news-page');
   const notInNewsPage = document.getElementById('not-in-news-page');
   const stockList = document.getElementById('stock-list');
-  const inputField = document.querySelector('input');
+  const keywordInput = document.getElementById('keyword-input');
+  const searchResults = document.getElementById('search-results');
 
   // 현재 탭의 URL 확인
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -28,11 +29,57 @@ document.addEventListener('DOMContentLoaded', () => {
       inNewsPage.style.display = 'none';
     }
   });
-
+  // 검색어 입력 후 엔터키 이벤트
+  keywordInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      const keyword = keywordInput.value.trim();
+      if (keyword) {
+        searchKeyword(keyword);
+      }
+    }
+  });
   //키워드 검색
   function searchKeyword(keyword) {
     //해당 키워드에 대한 유사 키워드 10개 반환
     //사용자가 검색 결과 중 하나를 선택 시 해당 키워드 id에 대해 bringStockInfo 호출
+    const url = `http://localhost:3000/api/keywords/${keyword}`;
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP 상태 코드 오류: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('API 응답 데이터:', data);
+        updateSearchResults(data);
+      })
+      .catch((error) => console.error('키워드 검색 API 호출 중 오류 발생:', error));
+  }
+
+  // 검색 결과 업데이트
+  function updateSearchResults(keywords) {
+    searchResults.innerHTML = ''; // 기존 결과 초기화
+    if (keywords.length > 0) {
+      searchResults.style.display = 'block'; // 검색 결과 표시
+      keywords.forEach((keywordObj) => {
+        const keywordItem = document.createElement('div');
+        keywordItem.classList.add('search-result-item');
+        keywordItem.dataset.id = keywordObj.id;
+        keywordItem.textContent = `${keywordObj.keyword} (가중치: ${keywordObj.totalWeight.toFixed(2)})`;
+        keywordItem.style.cursor = 'pointer';
+
+        // 항목 클릭 이벤트
+        keywordItem.addEventListener('click', () => {
+          bringStockInfo(keywordObj.id);
+          searchResults.style.display = 'none'; // 검색 결과 창 닫기
+        });
+
+        searchResults.appendChild(keywordItem);
+      });
+    } else {
+      searchResults.style.display = 'none'; // 검색 결과 없음
+    }
   }
 
   //키워드 추출
@@ -63,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch((error) => console.error('주식 정보 API 호출 중 오류 발생:', error));
   }
 
+  //StockItem UI
   function updateStockItems(stockRankings) {
     inNewsPage.style.display = 'block';
     stockList.innerHTML = ''; // 기존 항목 초기화
@@ -79,5 +127,4 @@ document.addEventListener('DOMContentLoaded', () => {
       stockList.appendChild(stockItem);
     });
   }
-  // bringStockInfo('92');
 });
