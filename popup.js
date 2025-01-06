@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch((error) => console.error('키워드 검색 API 호출 중 오류 발생:', error));
   }
+
   // 검색 결과 업데이트
   function updateSearchResults(keywords) {
     searchResults.innerHTML = ''; // 기존 결과 초기화
@@ -132,6 +133,75 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch((error) => console.error('주식 정보 API 호출 중 오류 발생:', error));
   }
 
+  let activeStockItem = null; // 현재 활성화된 stockItem을 추적
+
+  // 종목의 가격 정보 가져오기
+  function bringStockCost(stockCode) {
+    const url = `http://127.0.0.1:3000/api/stocks/chart/${stockCode}/D`;
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP 상태 코드 오류: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(`종목 코드 ${stockCode}의 가격 정보:`, data);
+
+        if (data && data.length > 0) {
+          const latestStockData = data[data.length - 1]; // 배열의 마지막 요소 가져오기
+          toggleStockCost(stockCode, latestStockData); // 주식 정보를 토글
+        } else {
+          console.error('주식 데이터가 비어 있습니다.');
+        }
+      })
+      .catch((error) => console.error('종목 가격 정보 API 호출 중 오류 발생:', error));
+  }
+
+  // 주식 정보를 토글 (열기/닫기)
+  function toggleStockCost(stockCode, stockData) {
+    const stockItem = document.querySelector(`[data-symbol="${stockCode}"]`);
+
+    if (stockItem) {
+      // 이미 활성화된 stockItem이 있을 경우 닫기
+      if (activeStockItem && activeStockItem !== stockItem) {
+        const existingInfo = activeStockItem.querySelector('.stock-cost-info');
+        if (existingInfo) existingInfo.remove();
+      }
+
+      // 동일한 stockItem을 다시 클릭했을 경우 닫기
+      if (activeStockItem === stockItem) {
+        const existingInfo = stockItem.querySelector('.stock-cost-info');
+        if (existingInfo) existingInfo.remove();
+        activeStockItem = null; // 활성화된 stockItem을 초기화
+        return;
+      }
+
+      // 새로운 주식 정보 표시
+      const existingInfo = stockItem.querySelector('.stock-cost-info');
+      if (existingInfo) existingInfo.remove(); // 기존 정보 제거
+
+      const stockInfo = document.createElement('div');
+      stockInfo.classList.add('stock-cost-info'); // 스타일은 CSS에서 관리
+
+      stockInfo.innerHTML = `
+        <div id="label"><strong>날짜:</strong>${stockData.date}</div>
+        <div><strong>시가:</strong>${stockData.open.toLocaleString()} 원</div>
+        <div><strong>고가:</strong>${stockData.high.toLocaleString()} 원</div>
+        <div><strong>저가:</strong>${stockData.low.toLocaleString()} 원</div>
+        <div><strong>종가:</strong>${stockData.close.toLocaleString()} 원</div>
+        <div><strong>거래량:</strong>${stockData.volume.toLocaleString()}</div>
+      `;
+
+      stockItem.appendChild(stockInfo);
+
+      // 현재 활성화된 stockItem 갱신
+      activeStockItem = stockItem;
+    } else {
+      console.error(`Stock item with code ${stockCode}을(를) 찾을 수 없습니다.`);
+    }
+  }
+
   //StockItem UI
   function updateStockItems(stockRankings) {
     inNewsPage.style.display = 'block';
@@ -146,6 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
         <span style="color: #0046ff; margin-right: 10px">${index + 1}</span>
         ${stock.stock_name}
       `;
+
+      // 클릭 이벤트 시 해당 주식의 종목 정보 반환
+      stockItem.addEventListener('click', () => {
+        const stockCode = stockItem.dataset.symbol; // 데이터 속성에서 stockCode 추출
+        bringStockCost(stockCode); // bringStockCost 호출
+      });
+
       stockList.appendChild(stockItem);
     });
   }

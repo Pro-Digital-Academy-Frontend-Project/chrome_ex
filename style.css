@@ -119,3 +119,40 @@ h3 span {
 .search-result-item:last-child {
   margin-bottom: 0;
 }
+
+/* Stock cost information 스타일링 */
+.stock-cost-info {
+  margin-top: 10px;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 4개의 열로 구성 */
+  column-gap: 10px; /* 열 간격 */
+  row-gap: 10px; /* 행 간격 */
+  font-size: 14px;
+  text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+/* Stock cost information 내부 텍스트 스타일 */
+.stock-cost-info div {
+  display: flex;
+  align-items: center; /* 텍스트 수직 중앙 정렬 */
+  justify-content: flex-start; /* 텍스트 왼쪽 정렬 */
+  font-size: 14px;
+  flex-basis: 90px; /* 레이블의 고정 넓이 */
+  flex-shrink: 0; /* 레이블의 크기 축소 방지 */
+  color: #333;
+}
+
+/* 레이블 스타일 */
+.stock-cost-info div strong {
+  flex-basis: 50px; /* 레이블의 고정 넓이 */
+  flex-shrink: 0; /* 레이블의 크기 축소 방지 */
+  margin-right: 5px; /* 레이블과 값 사이 간격 */
+  font-weight: bold; /* 레이블 강조 */
+  color: #0046ff; /* 강조 색상 */
+}
+
+/* Stock cost info 항목 간격 조정 */
+.stock-cost-info div + div {
+  margin-top: 0; /* 항목 간격 제거 */
+}
